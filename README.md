@@ -2,9 +2,16 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![LangChain](https://img.shields.io/badge/LangChain-0.1+-green)](https://python.langchain.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.53+-red)](https://streamlit.io/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > 📚 **Projeto de estudos baseado no vídeo:** [Agente de IA completo com Python - Projeto RAG com Langchain](https://www.youtube.com/watch?v=0M8iO5ykY-E) por Hashtag Programação
+
+## 🌐 Deploy Online
+
+🚀 **Aplicação disponível em:** http://localhost:8501 *(rodando localmente)*
+
+💡 Para deploy em produção, considere usar [Streamlit Cloud](https://streamlit.io/cloud) ou [Railway](https://railway.app/)
 
 ## 🎯 Sobre o Projeto
 
@@ -12,12 +19,15 @@ Sistema completo de agente de IA baseado em arquitetura **RAG** (Retrieval-Augme
 
 ### 🚀 Funcionalidades Principais
 
+- ✅ **Interface Web com Streamlit** - Interface moderna e intuitiva
 - ✅ **Processamento automático de PDFs** - Extração e chunking inteligente
 - ✅ **Busca semântica avançada** - Encontra conteúdo relevante por significado
-- ✅ **Interface de consulta interativa** - Perguntas em linguagem natural
 - ✅ **Banco vetorial persistente** - ChromaDB para armazenamento eficiente
 - ✅ **Suporte a múltiplos documentos** - Processa vários PDFs simultaneamente
 - ✅ **Controle de alucinações** - Responde apenas com base nos documentos
+- ✅ **Histórico de conversas** - Mantém contexto das perguntas anteriores
+- ✅ **Score de relevância** - Mostra quais documentos foram usados
+- ✅ **Integração com Groq** - Modelo Llama 3.1 gratuito e ultra-rápido
 
 ## 🏗️ Arquitetura RAG
 
@@ -35,14 +45,15 @@ Sistema completo de agente de IA baseado em arquitetura **RAG** (Retrieval-Augme
 
 ```
 rag_langchain/
-├── main.py              # Interface principal de consulta RAG
+├── app.py              # 🎨 Interface web Streamlit (RECOMENDADO)
+├── main.py             # Interface terminal de consulta RAG
 ├── db.py               # Processamento e vetorização de documentos
-├── .env                # Configuração de API keys (OpenAI/OpenRouter)
-├── requirements.txt     # Dependências do projeto
+├── .env                # Configuração de API keys
+├── requirements.txt    # Dependências do projeto
 ├── base/               # 📂 Diretório com documentos PDF
-│   └── FAQ Python Video YouTube.pdf
-├── db/                 # 🗄️ Banco vetorial ChromaDB (criado automaticamente)
-└── docs/               # 📚 Documentação completa do projeto
+├── db/                 # 🗄️ Banco vetorial ChromaDB (auto-gerado)
+├── docs/               # 📚 Documentação e tutoriais
+└── venv/               # Ambiente virtual Python
 ```
 
 ## 🚀 Como Começar
@@ -83,16 +94,23 @@ pip install -r requirements.txt
 
 Crie um arquivo `.env` com sua configuração:
 
+**Opção 1: Groq (Recomendado - Gratuito e Ultra-rápido)** 🚀
 ```bash
-# Para OpenAI
+# Crie conta gratuita em: https://console.groq.com
+GROQ_API_KEY=gsk-sua-key-aqui
+GROQ_MODEL=llama-3.1-8b-instant
+
+# Embeddings via OpenRouter (gratuito)
+OPENAI_API_KEY=sk-or-v1-sua-key-aqui
+OPENAI_BASE_URL=https://openrouter.ai/api/v1
+OPENAI_MODEL=qwen/qwen3-embedding-0.6b
+```
+
+**Opção 2: OpenAI (Pago)** 💰
+```bash
 OPENAI_API_KEY=sk-sua-key-aqui
 EMBEDDING_MODEL=text-embedding-3-small
 LLM_MODEL=gpt-3.5-turbo
-
-# OU para OpenRouter (alternativa gratuita)
-OPENAI_API_KEY=sk-or-v1-sua-key-aqui
-EMBEDDING_MODEL=openai/text-embedding-3-small
-LLM_MODEL=openai/gpt-3.5-turbo
 ```
 
 ### 5. Adicionar Documentos
@@ -118,6 +136,19 @@ Salvando vetorização no disco...
 
 ### 7. Fazer Consultas
 
+#### Opção A: Interface Web (Recomendado) 🎨
+```bash
+streamlit run app.py
+```
+
+A interface web será aberta em `http://localhost:8501` com:
+- 🎨 **Interface moderna e intuitiva**
+- 💬 **Histórico completo de conversas**
+- 📚 **Visualização detalhada das fontes**
+- 🔍 **Score de relevância dos documentos**
+- 📊 **Status do sistema em tempo real**
+
+#### Opção B: Interface Terminal 🖥️
 ```bash
 python main.py
 ```
@@ -149,9 +180,10 @@ Resposta da ia: Herança em Python é um conceito de POO que permite...
 | Componente | Tecnologia | Descrição |
 |-----------|------------|-----------|
 | **Framework** | LangChain | Orquestração do pipeline RAG |
+| **Interface Web** | Streamlit | Interface moderna e interativa |
 | **Banco Vetorial** | ChromaDB | Armazenamento e busca de embeddings |
-| **Embeddings** | OpenAI | Conversão de texto em vetores |
-| **LLM** | OpenAI GPT | Geração de respostas |
+| **LLM** | Groq (Llama 3.1) | Geração de respostas gratuita e rápida |
+| **Embeddings** | OpenRouter | Conversão de texto em vetores (gratuito) |
 | **Processamento PDF** | PyPDF | Extração de conteúdo de PDFs |
 | **Chunking** | RecursiveCharacterTextSplitter | Divisão inteligente de documentos |
 
@@ -193,12 +225,13 @@ python db.py
 
 ## 🔮 Próximos Passos
 
-- [ ] Interface web com Streamlit
+- [x] ✅ **Interface web com Streamlit** - Implementado!
+- [x] ✅ **Histórico de consultas** - Implementado!
+- [x] ✅ **Sistema de feedback** - Score de relevância implementado!
 - [ ] Suporte a DOCX e TXT
 - [ ] Sistema de avaliação de respostas
 - [ ] Interface de upload dinâmico
-- [ ] Histórico de consultas
-- [ ] Sistema de feedback
+- [ ] Deploy na nuvem (Streamlit Cloud/Railway)
 
 ## 🤝 Contribuição
 
